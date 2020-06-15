@@ -1,2 +1,3 @@
-# kong-config-builder
+# Kong Config Builder
+
 Kong descriptive configuration builder
