@@ -9,7 +9,7 @@ with open("README.md", "r") as fh:
 setup(
     name="kong_config_builder",
     version="DYNAMIC",
-    description="Kong descriptive configuration builder",
+    description="Kong declarative configuration builder",
     long_description=long_description,
     long_description_content_type="text/markdown",
     author="Olx",
