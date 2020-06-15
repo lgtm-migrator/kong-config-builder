@@ -1,0 +1,3 @@
+include README.md
+recursive-include . kong_config_builder/**
+recursive-include . requirements.txt
