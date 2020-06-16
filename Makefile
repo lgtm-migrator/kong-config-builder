@@ -21,7 +21,7 @@ integration:
 	@pytest --ignore="tests_unit"
 
 coverage:	
-	@pytest --cov=kong_config_builder
+	@pytest --cov=kong_config_builder --cov-report=term-missing
 
 all-tests: | coverage lint check-sec
 
