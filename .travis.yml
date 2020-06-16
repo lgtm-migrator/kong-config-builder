@@ -10,6 +10,7 @@ services:
 # command to install dependencies
 install:
   - make setup
+  - make kong
   - pip install coveralls  # for coveralls
 # command to run tests
 script:
