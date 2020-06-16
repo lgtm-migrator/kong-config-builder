@@ -16,7 +16,7 @@ pip install kong_config_builder
 
 ## Usage
 
-Take a look at [Example File](https://github.com/olxbr/kong-config-builder/blob/master/create_test_config.py)
+Take a look at [Example File](https://github.com/olxbr/kong-config-builder/blob/master/create_test_config.py).
 
 ## Contribute
 
