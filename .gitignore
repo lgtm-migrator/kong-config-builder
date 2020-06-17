@@ -130,3 +130,6 @@ dmypy.json
 
 # kong_config_builder
 kong.yml
+
+# vscode
+.vscode/
