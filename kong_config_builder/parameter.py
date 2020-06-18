@@ -1,18 +1,21 @@
 import boto3
 import logging
 
-from os import environ
 from typing import List, Dict, Optional
 from functools import reduce
 from kong_config_builder.password import PasswordManager
-
-
-KCB_PASSWORD_GENERATOR_SIZE = int(environ.get(
-    "KCB_PASSWORD_GENERATOR_SIZE", 50))
+from kong_config_builder.settings import (
+    KCB_AWS_REGION_NAME,
+    KCB_PASSWORD_GENERATOR_SIZE
+)
 
 
 class ParameterStoreAPI:
-    def __init__(self, client=boto3.client("ssm"), password=PasswordManager):
+    def __init__(
+        self,
+        client=boto3.client("ssm", region_name=KCB_AWS_REGION_NAME),
+        password=PasswordManager
+    ):
         self.logger = logging.getLogger(__name__)
         self._client = client
         self._password_manager = password
