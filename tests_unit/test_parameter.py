@@ -13,7 +13,7 @@ class TestParameterAPI(TestCase):
         self.client = Mock()
 
     def test_should_initialize_parameter_object(self):
-        parameter = ParameterStoreAPI()
+        parameter = ParameterStoreAPI(client=self.client)
         self.assertIsInstance(parameter, ParameterStoreAPI)
 
     def test_should_populate_with_available_stored_parameters(self):
