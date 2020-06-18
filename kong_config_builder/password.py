@@ -1,9 +1,9 @@
 import string
-import random
+import secrets
 
 
 class PasswordManager:
     @staticmethod
     def generate(size: int) -> str:
-        password = string.ascii_letters + string.digits
-        return "".join(random.choice(password) for i in range(int(size)))
+        alphabet = string.ascii_letters + string.digits
+        return "".join(secrets.choice(alphabet) for i in range(int(size)))
