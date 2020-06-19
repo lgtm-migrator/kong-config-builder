@@ -49,8 +49,11 @@ class ParameterStoreAPI:
                 Overwrite=False
             )
             return True
+        except self._client.exceptions.ParameterAlreadyExists:
+            self.logger.error(f"The parameter {name} already exists.")
+            return True
         except Exception as err:
-            self.logger.error(f"The parameter {err} already exists.")
+            self.logger.error(err)
             return False
 
     def populate(self, namespace: str) -> None:

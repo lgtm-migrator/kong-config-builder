@@ -81,3 +81,34 @@ class TestParameterAPI(TestCase):
             Overwrite=False
         )
         self.assertEqual(response, True)
+
+    def test_should_get_parameters_by_namespace(self):
+        parameter = ParameterStoreAPI(client=self.client)
+        self.client.get_paginator = Mock()
+
+        paginate = Mock()
+        self.client.get_paginator.return_value = paginate
+        paginate.paginate = Mock(return_value=[
+            {"Parameters": [{"Name": "foo"}, {"Name": "bar"}]}])
+
+        parameters = parameter._get_parameters_by("fake-namespace")
+
+        self.client.get_paginator.assert_called_once_with(
+            "describe_parameters")
+        paginate.paginate.assert_called_once_with(ParameterFilters=[{
+            "Key": "Name",
+            "Values": ["fake-namespace"],
+            "Option": "BeginsWith"
+        }])
+        self.assertEqual(parameters.sort(), ["foo", "bar"].sort())
+
+    def test_should_get_parameter_by_key(self):
+        parameter = ParameterStoreAPI(client=self.client)
+        self.client.get_parameters = Mock(return_value={"Parameters": [
+            {"Name": "foo", "Value": "bar"}]})
+
+        param = parameter._get_value_by("foo")
+
+        self.client.get_parameters.assert_called_once_with(
+            Names=["foo"], WithDecryption=True)
+        self.assertEqual(param, {"foo": "bar"})
