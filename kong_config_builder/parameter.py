@@ -4,10 +4,7 @@ import logging
 from typing import List, Tuple, Optional
 from functools import reduce
 from kong_config_builder.password import PasswordManager
-from kong_config_builder.settings import (
-    KCB_AWS_REGION_NAME,
-    KCB_PASSWORD_GENERATOR_SIZE
-)
+from kong_config_builder.settings import KCB_AWS_REGION_NAME
 
 
 class ParameterStoreAPI:

@@ -64,7 +64,7 @@ class TestParameterAPI(TestCase):
         self.client.put_parameter = Mock(return_value=True)
 
         parameter = ParameterStoreAPI(client=self.client)
-        response = parameter.put(
+        parameter.put(
             name="/fake-namespace/development/fake-application/fake-password",
             value="qwertyuiop",
             tags=[("team", "fake-team")],
@@ -84,7 +84,7 @@ class TestParameterAPI(TestCase):
         self.client.put_parameter = Mock(return_value=True)
 
         parameter = ParameterStoreAPI(client=self.client)
-        response = parameter.put(
+        parameter.put(
             name="/fake-namespace/development/fake-application/fake-password",
             value="qwertyuiop",
             tags=[("team", "fake-team")],
@@ -104,7 +104,7 @@ class TestParameterAPI(TestCase):
         self.client.put_parameter = Mock(return_value=True)
 
         parameter = ParameterStoreAPI(client=self.client)
-        response = parameter.put(
+        parameter.put(
             name="/fake-namespace/development/fake-application/fake-password",
             value="qwertyuiop",
             tags=[("team", "fake-team")],
