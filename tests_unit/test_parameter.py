@@ -29,15 +29,13 @@ class TestParameterAPI(TestCase):
             call("/fake-namespace/first-parameter"),
             call("/fake-namespace/second-parameter"),
         ])
-        self.assertEqual(parameter.available_parameters, PARAMETERS)
-
-    def test_should_paginate_through_parameters(self):
-        pass
+        self.assertEqual(parameter._available_parameters_cache, PARAMETERS)
 
     def test_should_get_parameter(self):
         parameter = ParameterStoreAPI(client=self.client)
         parameter.put = Mock()
-        parameter.available_parameters = PARAMETERS
+        parameter._available_parameters_cache = PARAMETERS
+
         value = parameter.get("/fake-namespace/first-parameter")
 
         parameter.put.assert_not_called()
@@ -46,7 +44,7 @@ class TestParameterAPI(TestCase):
     def test_should_get_parameter_empty(self):
         parameter = ParameterStoreAPI(client=self.client)
         parameter.put = Mock()
-        parameter.available_parameters = PARAMETERS
+        parameter._available_parameters_cache = PARAMETERS
         value = parameter.get("/fake-namespace/empty-parameter")
 
         parameter.put.assert_not_called()
@@ -54,14 +52,14 @@ class TestParameterAPI(TestCase):
 
     def test_shoudl_get_parameter_generating_password(self):
         parameter = ParameterStoreAPI(client=self.client)
-        parameter.put = Mock(return_value=True)
-        parameter.available_parameters = PARAMETERS
-        value = parameter.get("/fake-namespace/password-parameter", True)
+        parameter.put = Mock()
+        parameter._available_parameters_cache = PARAMETERS
+        value = parameter.get("/fake-namespace/password-parameter")
 
-        parameter.put.assert_called_once()
-        self.assertEqual(len(value), 50)
+        parameter.put.assert_not_called()
+        self.assertEqual(value, None)
 
-    def test_should_put_parameter(self):
+    def test_should_put_parameter_with_encryption(self):
         parameter = ParameterStoreAPI(client=self.client)
         self.client.put_parameter = Mock(return_value=True)
 
@@ -69,20 +67,59 @@ class TestParameterAPI(TestCase):
         response = parameter.put(
             name="/fake-namespace/development/fake-application/fake-password",
             value="qwertyuiop",
-            tags=[{"team": "fake-team"}],
+            tags=[("team", "fake-team")],
             encrypt=True
         )
 
         self.client.put_parameter.assert_called_once_with(
             Name="/fake-namespace/development/fake-application/fake-password",
             Value="qwertyuiop",
-            Tags=[{"team": "fake-team"}],
+            Tags=[{"Key": "team", "Value": "fake-team"}],
             Type="SecureString",
             Overwrite=False
         )
-        self.assertEqual(response, True)
 
-    def test_should_get_parameters_by_namespace(self):
+    def test_should_put_parameter_without_encryption(self):
+        parameter = ParameterStoreAPI(client=self.client)
+        self.client.put_parameter = Mock(return_value=True)
+
+        parameter = ParameterStoreAPI(client=self.client)
+        response = parameter.put(
+            name="/fake-namespace/development/fake-application/fake-password",
+            value="qwertyuiop",
+            tags=[("team", "fake-team")],
+            encrypt=False
+        )
+
+        self.client.put_parameter.assert_called_once_with(
+            Name="/fake-namespace/development/fake-application/fake-password",
+            Value="qwertyuiop",
+            Tags=[{"Key": "team", "Value": "fake-team"}],
+            Type="String",
+            Overwrite=False
+        )
+
+    def test_should_put_parameter_overwriting(self):
+        parameter = ParameterStoreAPI(client=self.client)
+        self.client.put_parameter = Mock(return_value=True)
+
+        parameter = ParameterStoreAPI(client=self.client)
+        response = parameter.put(
+            name="/fake-namespace/development/fake-application/fake-password",
+            value="qwertyuiop",
+            tags=[("team", "fake-team")],
+            overwrite=True
+        )
+
+        self.client.put_parameter.assert_called_once_with(
+            Name="/fake-namespace/development/fake-application/fake-password",
+            Value="qwertyuiop",
+            Tags=[{"Key": "team", "Value": "fake-team"}],
+            Type="SecureString",
+            Overwrite=True
+        )
+
+    def test_should_get_parameter_by_namespace(self):
         parameter = ParameterStoreAPI(client=self.client)
         self.client.get_paginator = Mock()
 
