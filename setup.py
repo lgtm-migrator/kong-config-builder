@@ -1,7 +1,15 @@
 from setuptools import setup, find_packages
 
+libs = ["aws"]
+extras = {"all": []}
+
 with open("requirements.txt") as reqs:
     requirements = reqs.read().split("\n")
+
+for lib in libs:
+    with open(f"requirements_{lib}.txt") as reqs:
+        extras[lib] = reqs.read().split("\n")
+        extras["all"] = extras["all"] + extras[lib]
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -18,6 +26,7 @@ setup(
     url='https://github.com/olxbr/kong-config-builder/',
     download_url='https://github.com/olxbr/kong-config-builder/archive/master.zip',
     install_requires=requirements,
+    extra_require=extras,
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: Apache Software License",
