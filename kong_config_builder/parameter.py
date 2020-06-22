@@ -41,6 +41,7 @@ class ParameterStoreAPI:
                 Type=_type,
                 Overwrite=overwrite
             )
+            self._available_parameters_cache[name] = value
         except Exception as err:
             self._logger.error(err)
 

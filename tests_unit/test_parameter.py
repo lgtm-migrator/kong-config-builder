@@ -64,19 +64,25 @@ class TestParameterAPI(TestCase):
         self.client.put_parameter = Mock(return_value=True)
 
         parameter = ParameterStoreAPI(client=self.client)
+        key = "/fake-namespace/development/fake-application/fake-password"
+        value = "qwertyuiop"
         parameter.put(
-            name="/fake-namespace/development/fake-application/fake-password",
-            value="qwertyuiop",
+            name=key,
+            value=value,
             tags=[("team", "fake-team")],
             encrypt=True
         )
 
         self.client.put_parameter.assert_called_once_with(
-            Name="/fake-namespace/development/fake-application/fake-password",
-            Value="qwertyuiop",
+            Name=key,
+            Value=value,
             Tags=[{"Key": "team", "Value": "fake-team"}],
             Type="SecureString",
             Overwrite=False
+        )
+        self.assertEqual(
+            parameter._available_parameters_cache[key],
+            value
         )
 
     def test_should_put_parameter_without_encryption(self):
