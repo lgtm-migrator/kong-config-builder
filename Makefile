@@ -4,7 +4,7 @@ install:
 	@pip install -e .
 
 setup: install
-	@pip install -r requirements_test.txt
+	@pip install -r requirements/requirements_test.txt
 
 lint:
 	@flake8 kong_config_builder tests_unit tests_integration

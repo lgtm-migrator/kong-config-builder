@@ -3,11 +3,11 @@ from setuptools import setup, find_packages
 libs = ["aws"]
 extras = {"all": []}
 
-with open("requirements.txt") as reqs:
+with open("requirements/requirements.txt") as reqs:
     requirements = reqs.read().split("\n")
 
 for lib in libs:
-    with open(f"requirements_{lib}.txt") as reqs:
+    with open(f"requirements/requirements_{lib}.txt") as reqs:
         extras[lib] = reqs.read().split("\n")
         extras["all"] = extras["all"] + extras[lib]
 
