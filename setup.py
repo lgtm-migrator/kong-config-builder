@@ -26,7 +26,7 @@ setup(
     url='https://github.com/olxbr/kong-config-builder/',
     download_url='https://github.com/olxbr/kong-config-builder/archive/master.zip',
     install_requires=requirements,
-    extra_require=extras,
+    extras_require=extras,
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: Apache Software License",
