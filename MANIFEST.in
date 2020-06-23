@@ -1,3 +1,4 @@
 include README.md
 recursive-include . kong_config_builder/**
 recursive-include . requirements.txt
+recursive-include . requirements_aws.txt
