@@ -1,5 +1,9 @@
-from kong_config_builder import *  #noqa
+from kong_config_builder import *  # noqa
 
+
+key_auth_plugin = Plugin(
+    name="key-auth",
+    enabled=True)
 
 Kong(
     services=[
@@ -14,6 +18,22 @@ Kong(
                     ],
                     strip_path=False
                 )
+            ]
+        ),
+        Service(
+            name="auth_name",
+            host="test_upstream",
+            routes=[
+                Route(
+                    name="auth_route",
+                    paths=[
+                        "/auth"
+                    ],
+                    strip_path=True
+                )
+            ],
+            plugins=[
+                key_auth_plugin
             ]
         )
     ],
@@ -44,7 +64,7 @@ Kong(
         )
     ],
     plugins=[
-        Plugin(name="key-auth", enabled=False)
+        Plugin(name="prometheus", enabled=False)
     ],
     consumers=[
         Consumer(username="test_consumer")
