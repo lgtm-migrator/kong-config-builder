@@ -133,3 +133,4 @@ kong.yml
 
 # vscode
 .vscode/
+!.github/*
